@@ -2,14 +2,8 @@
   <div class="body">
     <div class="LL">
       <serverHeader></serverHeader>
-      <serverItems
-        :servers="servers"
-        v-on:nspChanged="nspChanged"
-      ></serverItems>
-      <serverPlus
-        @click.native="serveradd"
-        v-on:serveradd="serveradd"
-      ></serverPlus>
+      <serverItems :servers="servers" v-on:nspChanged="nspChanged"></serverItems>
+      <serverPlus @click.native="serveradd" v-on:serveradd="serveradd"></serverPlus>
     </div>
     <div class="LR">LR</div>
     <div class="RL">

@@ -1,6 +1,6 @@
 import index from "pages/index";
 import Chat from "pages/Chat";
-import Room from "pages/Room";
+import Room2 from "pages/Room2";
 import register from "pages/register";
 import Error404 from "pages/Error404";
 const routes = [
@@ -21,7 +21,7 @@ const routes = [
   },
   {
     path: "/room",
-    component: Room
+    component: Room2
     // children: [{ path: "", component: () => import("pages/Index.vue") }]
   }
 ];

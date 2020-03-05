@@ -21,51 +21,86 @@
           <q-item-section avatar>
             <q-icon color="primary" name="bluetooth">
               <q-popup-proxy>
-                <q-banner class="bg-brown text-white">
-                  {{ server.namespace }}
-                </q-banner>
+                <q-banner class="bg-brown text-white">{{ server.namespace }}</q-banner>
               </q-popup-proxy>
             </q-icon>
           </q-item-section>
-          <q-item-section>{{ server.name }} </q-item-section>
+          <q-item-section>{{ server.name }}</q-item-section>
           <q-item-section side>
             <q-item-label caption>server</q-item-label>
           </q-item-section>
         </q-item>
 
-        <q-item clickable="">
-          <q-item-section avatar>
-            <q-icon color="red" name="mdi-plus-box" />
-          </q-item-section>
-          <q-item-section>
-            <q-popup-proxy>
-              <q-banner>
+        <q-btn @click="mdiplusbuttonclicked">
+          <q-icon color="red" name="mdi-plus-box" />
+          <q-icon color="bl" name="mdi-magnify" />
+
+          <q-dialog v-model="mdiplusbutton">
+            <q-card>
+              <q-card-section>
+                <div class="text-h6">+</div>
+              </q-card-section>
+
+              <q-card-section class="q-pt-none">
                 <q-input
                   v-model="newserver"
                   title="Edit the Namespace"
                   v-on:keyup.enter="newServeradd(newserver)"
                   label="type namespace"
-                >
-                </q-input>
-              </q-banner>
-            </q-popup-proxy>
-            <q-dialog v-model="alert">
-              <q-card>
-                <q-card-section>
-                  <div class="text-h6">Alert</div>
-                </q-card-section>
+                ></q-input>
+              </q-card-section>
 
-                <q-card-section class="q-pt-none">
-                  {{ alertMessage }}
-                </q-card-section>
+              <q-card-actions align="right">
+                <q-btn
+                  flat
+                  label="OK"
+                  color="primary"
+                  v-close-popup
+                  @click="newServeradd(newserver)"
+                />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+          <q-dialog v-model="mdisearchbutton">
+            <q-card>
+              <q-card-section>
+                <div class="text-h6">+</div>
+              </q-card-section>
 
-                <q-card-actions align="right">
-                  <q-btn flat label="OK" color="primary" v-close-popup />
-                </q-card-actions>
-              </q-card>
-            </q-dialog>
-          </q-item-section>
-        </q-item>
+              <q-card-section class="q-pt-none">
+                <q-input
+                  v-model="newserver"
+                  title="Edit the Namespace"
+                  v-on:keyup.enter="newServeradd(newserver)"
+                  label="type namespace"
+                ></q-input>
+              </q-card-section>
+
+              <q-card-actions align="right">
+                <q-btn
+                  flat
+                  label="OK"
+                  color="primary"
+                  v-close-popup
+                  @click="newServeradd(newserver)"
+                />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+          <q-dialog v-model="alert">
+            <q-card>
+              <q-card-section>
+                <div class="text-h6">Alert</div>
+              </q-card-section>
+
+              <q-card-section class="q-pt-none">{{ alertMessage }}</q-card-section>
+
+              <q-card-actions align="right">
+                <q-btn flat label="OK" color="primary" v-close-popup />
+              </q-card-actions>
+            </q-card>
+          </q-dialog>
+        </q-btn>
       </q-list>
     </div>
     <div class="RL">
@@ -73,10 +108,9 @@
         <div style="width: 100%; max-width: 400px"></div>
       </div>
       <div class="q-pa-md">
-        <q-list separator>
+        <q-list separator v-model="chats">
           <q-chat-message
             v-for="(chat, index) in chats"
-            v-bind="chat"
             :key="chat + index"
             :name="chat.name"
             :text="[chat.message]"
@@ -110,17 +144,17 @@ export default {
     this.servers = await this.actServers();
     this.chats = await this.actChats();
     if (!this.getUserinfo) await this.newServeradd(this.$route.query.nsp);
+  },
+  async created() {
     this.socket.on("new message", msg => {
       console.log("new message in:", msg);
       console.log(this.chats);
       this.chats.push(JSON.parse(msg));
     });
   },
-  async created() {
-    console.log(this.$route.query);
-    console.log(this.getUserinfo);
+  async updated() {
+    // this.chats = await this.actChats();
   },
-  async updated() {},
   computed: {
     ...mapGetters("user", ["getUserinfo"]),
     user() {
@@ -138,7 +172,8 @@ export default {
       message: "",
       messages: [],
       alert: false,
-      alertMessage: ""
+      alertMessage: "",
+      mdiplusbutton: false
     };
   },
   methods: {
@@ -189,11 +224,15 @@ export default {
         console.log(res);
         const newserver = res.data.data.joinServer;
         this.servers.push(newserver);
+        this.newserver = "";
       } catch (error) {
         console.error("joinServer mutation error", error);
         this.alertMessage = "  Wrong namespace is typed";
         this.alert = true;
       }
+    },
+    mdiplusbuttonclicked() {
+      this.mdiplusbutton = true;
     }
   }
 };
@@ -210,13 +249,13 @@ export default {
 .LL {
   flex: 1.5;
   height: 1000px;
-  background: orange;
+  background: rgb(145, 157, 161);
   text-align: center;
 }
 .RL {
   flex: 5;
 
-  background: skyblue;
+  background: rgb(255, 249, 237);
 }
 .RR {
   flex: 2;
