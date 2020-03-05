@@ -207,7 +207,7 @@ export default {
     },
     async OtherServerJoining(server) {
       if (this.socket) this.socket.close();
-      this.socket = io(`http://34.97.145.153:6004/server-${server.namespace}`);
+      this.socket = io(`http://34.97.145.153:6003/server-${server.namespace}`);
       this.ChatDatas = await this.QueryPrevChatData(server.namespace);
 
       this.socket.on("new message", msg => {
