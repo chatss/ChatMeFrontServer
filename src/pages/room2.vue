@@ -115,7 +115,7 @@ import Vue from "vue";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
 // const ENDPOINT = "http://127.0.0.1:6013";
-const ENDPOINT = "http://34.97.145.153/";
+const ENDPOINT = "http://34.97.145.153:6013/";
 export default {
   name: "RoomIndex",
   data() {
