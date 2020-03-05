@@ -47,19 +47,6 @@
               </q-card-actions>
             </q-card>
           </q-dialog>
-          <q-dialog v-model="alert.on">
-            <q-card>
-              <q-card-section>
-                <div class="text-h6">Alert</div>
-              </q-card-section>
-
-              <q-card-section class="q-pt-none">{{ alert.message }}</q-card-section>
-
-              <q-card-actions align="right">
-                <q-btn flat label="OK" color="primary" v-close-popup />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
         </q-btn>
 
         <q-btn @click="ServerCreateButtonClicking">
@@ -79,20 +66,20 @@
               </q-card-actions>
             </q-card>
           </q-dialog>
-          <q-dialog v-model="alert.on">
-            <q-card>
-              <q-card-section>
-                <div class="text-h6">Alert</div>
-              </q-card-section>
-
-              <q-card-section class="q-pt-none">{{ alert.message }}</q-card-section>
-
-              <q-card-actions align="right">
-                <q-btn flat label="OK" color="primary" v-close-popup />
-              </q-card-actions>
-            </q-card>
-          </q-dialog>
         </q-btn>
+        <q-dialog v-model="alert.on">
+          <q-card>
+            <q-card-section>
+              <div class="text-h6">Alert</div>
+            </q-card-section>
+
+            <q-card-section class="q-pt-none">{{ alert.message }}</q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="OK" color="primary" v-close-popup />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
       </q-list>
     </div>
     <div class="RL">
@@ -127,7 +114,8 @@ import io from "socket.io-client";
 import Vue from "vue";
 import { mapGetters, mapMutations, mapActions } from "vuex";
 
-const ENDPOINT = "http://127.0.0.1:6003";
+// const ENDPOINT = "http://127.0.0.1:6013";
+const ENDPOINT = "http://34.97.145.153/";
 export default {
   name: "RoomIndex",
   data() {
@@ -184,8 +172,8 @@ export default {
           query: `mutation {\n  joinServer(nsp: "${this.NewServerNamespace}"){\n    id, name, namespace,\n  }\n}`
         });
         if (res.data.errors) {
-          this.alertMessage = "  Wrong namespace is typed";
-          this.alert = true;
+          this.alert.message = "  Wrong namespace is typed";
+          this.alert.on = true;
         } else {
           this.MyJoinServers.push(res.data.data.joinServer);
           this.NewServerNamespace = "";
@@ -202,13 +190,16 @@ export default {
         const res = await axios.post("/", {
           query: `mutation {\n  createServer(\n    owner:\"${this.getUserinfo}\",\n  \tname: \"${this.NewServerName}\"\n  ){\n    id, name, namespace,\n  } \n}`
         });
-        console.log(res);
         if (res.data.errors) {
-          this.alertMessage = "  Server creating is faild";
-          this.alert = true;
+          this.alert.message = "  Server creating is faild";
+          this.alert.on = true;
         } else {
           this.MyJoinServers.push(res.data.data.createServer);
           this.NewServerNamespace = "";
+
+          this.alert.message =
+            ENDPOINT + "/room?nsp=" + res.data.data.createServer.namespace;
+          this.alert.on = true;
         }
       } catch (error) {
         console.error("joinServer mutation error", error);
