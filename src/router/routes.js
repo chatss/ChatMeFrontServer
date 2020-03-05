@@ -1,8 +1,8 @@
-import index from "../pages/index.vue";
-import Chat from "../pages/Chat.vue";
-import Room2 from "../pages/Room2.vue";
-import register from "../pages/register.vue";
-import Error404 from "../pages/Error404.vue";
+import index from "pages/Index";
+import Chat from "pages/Chat";
+import Room2 from "pages/room2";
+import register from "pages/register";
+import Error404 from "pages/Error404";
 const routes = [
   {
     path: "/",
