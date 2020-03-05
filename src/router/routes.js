@@ -1,7 +1,7 @@
-import index from "pages/index";
-import Chat from "pages/Chat";
-import Room2 from "pages/Room2";
-import register from "pages/register";
+import index from "./pages/index";
+import Chat from "./pages/Chat";
+import Room2 from "./pages/Room2";
+import register from "./pages/register";
 import Error404 from "pages/Error404";
 const routes = [
   {
