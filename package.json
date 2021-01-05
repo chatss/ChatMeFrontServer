@@ -15,7 +15,7 @@
     "@mdi/font": "^4.9.95",
     "@mdi/js": "^4.9.95",
     "@quasar/extras": "^1.0.0",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "eslint-plugin-prettier": "^3.1.2",
     "quasar": "^1.0.0",
     "vue-socket.io": "^3.0.7"
